@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>操作结果页</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var url = location.search;
+		 if (url.indexOf("?") != -1) {
+      var str = url.substr(1); 
+      strs = str.split("=");  
+      $("#msg_div").html(
+      decodeURIComponent(strs[1]) +'<br><br>' + 
+      '<a href="javascript:history.back(-1)">返回</a>'
+      );  
+     }
+	})
+</script>
+</head>
+<body>
+<div style = "border:2px solid black;margin-bottom:-2px ;width:100%;height:30px">
+操作结果
+</div>
+<div style="border:2px solid black;width:100%;height:500px" >
+	<div id="msg_div" style="margin-top:100px;margin-left:100px">
+		
+	</div>
+</div>
+</body>
+
+</html>

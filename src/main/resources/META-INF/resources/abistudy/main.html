@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>abistudy_week02</title>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<div style = "border:2px solid black;margin-bottom:-2px ;width:100%;height:30px">
+  首页
+</div>
+<div style="border:2px solid black;width:100%;height:500px" >
+	<div style="margin-top:100px;margin-left:100px">
+		<a href="javascript:document.getElementById('upload').click();">1：上传到VFS</a><br>
+		<a href="javascript:importFromVfs();">2：从VFS导入</a><br>
+		<a href="">3：进入查询列表</a><br>
+		<form id ="uploadForm" enctype="multipart/form-data">
+			<input type="file" id="upload" name="file" style="visibility:hidden" >
+		</form>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	$("#upload").change(function(){
+		var formData = new FormData($("#uploadForm")[0]);
+		$.ajax({
+		 type:"post",
+		 url:"actionWeekTest02/uploadToVfs",
+		 data:formData,
+		 dataType:"json",
+		 contentType:false,
+		 processData:false,
+		 success:function(response){
+		 	location.href = "/abistudy/abistudy/result.html?message=" + response.message;
+		 }
+		})
+	})
+	
+	var importFromVfs = function(){
+		$.post("actionWeekTest02/importToDb",function(response){
+			location.href = "/abistudy/abistudy/result.html?message=" + response.message;
+		})
+	}
+</script>
+</html>
