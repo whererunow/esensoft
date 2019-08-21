@@ -13,7 +13,7 @@
 	<div style="margin-top:100px;margin-left:100px">
 		<a href="javascript:document.getElementById('upload').click();">1：上传到VFS</a><br>
 		<a href="javascript:importFromVfs();">2：从VFS导入</a><br>
-		<a href="">3：进入查询列表</a><br>
+		<a href="javascript:queryScore();">3：进入查询列表</a><br>
 		<form id ="uploadForm" enctype="multipart/form-data">
 			<input type="file" id="upload" name="file" style="visibility:hidden" >
 		</form>
@@ -24,7 +24,7 @@
 	$("#upload").change(function(){
 		var formData = new FormData($("#uploadForm")[0]);
 		$.ajax({
-		 type:"post",
+		 type:"POST",
 		 url:"actionWeekTest02/uploadToVfs",
 		 data:formData,
 		 dataType:"json",
@@ -40,6 +40,17 @@
 		$.post("actionWeekTest02/importToDb",function(response){
 			location.href = "/abistudy/abistudy/result.html?message=" + response.message;
 		})
+	}
+	
+	var queryScore = function(){
+		$.ajax({
+			type:"GET",
+			url:"actionWeekTest02/queryScore",
+			data:"dateIndex=1",
+			success:function(response){
+				document.write(response);//用document.write 将返回的页面直接打印出来
+			}
+		});
 	}
 </script>
 </html>

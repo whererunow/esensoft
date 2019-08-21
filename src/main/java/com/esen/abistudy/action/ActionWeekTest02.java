@@ -1,7 +1,12 @@
 package com.esen.abistudy.action;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +20,10 @@ import com.esen.abistudy.Server;
 import com.esen.abistudy.dao.ScoreRepository;
 import com.esen.abistudy.orm.entity.Result;
 import com.esen.abistudy.orm.entity.ScoreEntity;
+import com.esen.ecore.repository.PageRequest;
+import com.esen.ecore.util.jdbc.ArrayRowHandler;
+import com.esen.ecore.util.jdbc.RowHandler;
 import com.esen.util.StmFunc;
-import com.esen.util.StrFunc;
 import com.esen.util.UNID;
 import com.esen.vfs2.Vfs2;
 import com.esen.vfs2.VfsFile2;
@@ -85,7 +92,7 @@ public class ActionWeekTest02 {
 				String[] lines = strings[i].split("\n");
 				//获取第一行的日期字符串 yyyyMMdd格式
 				String date = lines[0].split("：")[1].replace("-", "").trim();
-				for(int j=2; j<lines.length -1; j++) {
+				for(int j=2; j<lines.length; j++) {
 					//获取成绩信息 循环插入数据库
 					String[] line = lines[j].trim().split(",");
 					String student = line[0];
@@ -106,9 +113,35 @@ public class ActionWeekTest02 {
 			return new Result(false, "操作失败  错误信息：" + e.getMessage());
 		}
 	}
-	
+	/**
+	 * 查询成绩
+	 * @param req 用来往ftl页面传递数据
+	 * @param dateIndex  日期列表的索引
+	 * @return
+	 */
 	@RequestMapping("/queryScore")
-	public String queryScore() {
+	public String queryScore(HttpServletRequest req,Integer dateIndex) {
+		RowHandler<String> handler = new RowHandler<String>() {
+			@Override
+			public String processRow(ResultSet resultset) throws SQLException {
+				return resultset.getString(1);
+			}
+		};
+		//查询月份列表 转换为页面需求格式传递到ftl页面
+		List<String> list = scoreRepository.queryAll(
+				"select distinct date_ from score t order by date_ desc", handler, null);
+		List<String> dateList = new ArrayList<>();
+		for (String dateStr : list) {
+			String date= dateStr.substring(0, 4)+"年"+dateStr.substring(4,6)+"月";
+			dateList.add(date);
+		}
+		req.setAttribute("dateList", dateList);
+		//查询成绩列表 传递到ftl页面
+		List<HashMap<String, Object>> scoreList = scoreRepository.queryForMapList(
+				"select student_,语文,数学,外语,物理,化学,语文+数学+外语+物理+化学 as 总分"
+				+ " from (select * from (select student_,course_,score_ from score where date_ = '"+list.get(dateIndex)+"') "
+				+ " pivot(max(score_) for course_ in ('语文' as 语文,'数学' as 数学,'外语' as 外语,'物理' as 物理,'化学' as 化学))) order by 总分 DESC", null);
+		req.setAttribute("scoreList", scoreList);
 		return "abistudy/score";
 	}
 }
