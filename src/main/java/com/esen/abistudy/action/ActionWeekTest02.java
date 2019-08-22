@@ -8,13 +8,11 @@ import java.io.OutputStreamWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.postgresql.translation.messages_zh_TW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +27,6 @@ import com.esen.ecore.util.jdbc.RowHandler;
 import com.esen.util.FileFunc;
 import com.esen.util.StmFunc;
 import com.esen.util.UNID;
-import com.esen.util.exp.Expression;
 import com.esen.util.i18n.I18N;
 import com.esen.vfs2.Vfs2;
 import com.esen.vfs2.VfsFile2;
@@ -75,7 +72,8 @@ public class ActionWeekTest02 {
 			return new Result(true, I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
 		} catch (Exception e) {
 			//出现异常时 返回操作失败的结果信息以及异常信息
-			return new Result(false, I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
+			return new Result(false, 
+					I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
 		}
 	}
 
@@ -119,7 +117,8 @@ public class ActionWeekTest02 {
 			}
 			return new Result(true, I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
 		} catch (Exception e) {
-			return new Result(false,I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
+			return new Result(false,
+					I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
 		}
 	}
 
@@ -181,7 +180,8 @@ public class ActionWeekTest02 {
 			}
 			return new Result(true, I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
 		} catch (Exception e) {
-			return new Result(false, I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
+			return new Result(false, 
+					I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
 		}
 	}
 
