@@ -21,6 +21,7 @@
 </div>
 </body>
 <script type="text/javascript">
+	//当上传文件的文本框发生变化时 发送请求进行文件上传vfs的操作
 	$("#upload").change(function(){
 		var formData = new FormData($("#uploadForm")[0]);
 		$.ajax({
@@ -35,22 +36,15 @@
 		 }
 		})
 	})
-	
+	//从vfs将文件中的数据导入到数据库中
 	var importFromVfs = function(){
 		$.post("actionWeekTest02/importToDb",function(response){
 			location.href = "/abistudy/abistudy/result.html?message=" + response.message;
 		})
 	}
-	
+	//查询成绩 默认的dateIndex=0查询最后月份的数据
 	var queryScore = function(){
-		$.ajax({
-			type:"GET",
-			url:"actionWeekTest02/queryScore",
-			data:"dateIndex=1",
-			success:function(response){
-				document.write(response);//用document.write 将返回的页面直接打印出来
-			}
-		});
+		location.href="actionWeekTest02/queryScore?dateIndex="+0;
 	}
 </script>
 </html>

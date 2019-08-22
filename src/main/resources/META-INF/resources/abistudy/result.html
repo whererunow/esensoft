@@ -5,6 +5,7 @@
 <title>操作结果页</title>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
+	//从地址栏获取message参数，显示操作结果信息
 	$(document).ready(function(){
 		var url = location.search;
 		 if (url.indexOf("?") != -1) {
@@ -23,10 +24,8 @@
 操作结果
 </div>
 <div style="border:2px solid black;width:100%;height:500px" >
-	<div id="msg_div" style="margin-top:100px;margin-left:100px">
-		
+	<div id="msg_div" style="margin-top:100px;margin-left:100px">	
 	</div>
 </div>
 </body>
-
 </html>
