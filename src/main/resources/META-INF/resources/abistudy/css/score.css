@@ -1,0 +1,32 @@
+	#score_main{
+		widtd: 800px;
+		border: 1px solid gray;
+		position:absolute;
+    top:50%;
+    left:50%;
+    margin:-175px 0 0 -400px;
+	}
+ 	table,table tr th, table tr td { 
+  	border:1px solid black;
+  }
+  table{ 
+  	width:800px;
+		border-collapse: collapse;
+  }  
+  select{
+  	width:200px;
+  	height:22px;
+  	border: solid 1px gray;
+  	appearance:none;
+		-moz-appearance:none;
+		-webkit-appearance:none;
+		background: url("http://ourjs.github.io/static/2015/arrow.png") no-repeat scroll right center transparent;
+		padding-right: 14px;
+  }
+  button{
+  	padding:4px 40px;
+  	border-radius: 5px; 
+  	background-color: #DDDDDD; 
+  	border: 1px  #555 solid; 
+  	color: #333;
+  }	

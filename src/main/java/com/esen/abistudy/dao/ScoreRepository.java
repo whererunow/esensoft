@@ -8,7 +8,7 @@ import com.esen.ecore.repository.AbstractRepository;
  * @author yangk
  * @since 2019年8月19日
  */
-@ApplicationRepository
+@ApplicationRepository(path="/config/mapping/scoreentity-mapping.xml")
 public class ScoreRepository extends AbstractRepository<ScoreEntity>{
 	
 }

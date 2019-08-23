@@ -8,6 +8,11 @@ import com.esen.ecore.domain.IdEntityImpl;
  * @since 2019年8月19日
  */
 public class ScoreEntity extends IdEntityImpl{
+
+	/**
+	 * 序列化id
+	 */
+	private static final long serialVersionUID = 1230709537436200160L;
 	/**
 	 * 关键字 使用UNID类生成 
 	 */

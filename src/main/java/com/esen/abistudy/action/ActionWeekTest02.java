@@ -13,15 +13,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.esen.abistudy.Server;
 import com.esen.abistudy.dao.ScoreRepository;
-import com.esen.abistudy.orm.entity.Result;
 import com.esen.abistudy.orm.entity.ScoreEntity;
 import com.esen.ecore.util.jdbc.RowHandler;
 import com.esen.util.FileFunc;
@@ -58,8 +59,7 @@ public class ActionWeekTest02 {
 	 * @return 操作结果
 	 */
 	@RequestMapping("/uploadToVfs")
-	@ResponseBody
-	public Result uploadToVfs(MultipartFile file) {
+	public String uploadToVfs(HttpServletRequest req, @RequestParam("file")MultipartFile file) {
 		try {
 			Vfs2 vfs = server.getVfs();
 			VfsOperator operator = server.getVfsOperatorAsAdmin();
@@ -68,13 +68,18 @@ public class ActionWeekTest02 {
 			importDir.ensureExists(true);
 			// 在import目录下导入上传文件，
 			InputStream is = file.getInputStream();
-			importDir.importStm(is, file.getOriginalFilename());
-			return new Result(true, I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
+			try {
+				importDir.importStm(is, file.getOriginalFilename());
+			} finally {
+				is.close();
+			}
+			req.setAttribute("message", I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
 		} catch (Exception e) {
 			//出现异常时 返回操作失败的结果信息以及异常信息
-			return new Result(false, 
-					I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
+			req.setAttribute("message", I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage",
+					"操作失败  错误信息：" + e.getLocalizedMessage()));
 		}
+		return "abistudy/result";
 	}
 
 	/**
@@ -82,8 +87,7 @@ public class ActionWeekTest02 {
 	 * @return 操作结果
 	 */
 	@RequestMapping("/importToDb")
-	@ResponseBody
-	public Result importToDb() {
+	public String importToDb(HttpServletRequest req) {
 		try {
 			//导入前先删除原有数据
 			scoreRepository.removeAll();
@@ -115,11 +119,12 @@ public class ActionWeekTest02 {
 					scoreRepository.add(entity);
 				}
 			}
-			return new Result(true, I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
+			req.setAttribute("message", I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
 		} catch (Exception e) {
-			return new Result(false,
-					I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
+			req.setAttribute("message", I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage",
+					"操作失败  错误信息：" + e.getLocalizedMessage()));
 		}
+		return "abistudy/result";
 	}
 
 	/**
@@ -152,8 +157,7 @@ public class ActionWeekTest02 {
 	 * @return 操作结果
 	 */
 	@RequestMapping("/exportScore")
-	@ResponseBody
-	public Result exportScore(Integer dateIndex) {
+	public String exportScore(HttpServletRequest req, Integer dateIndex) {
 		try {
 			//获取日期下拉列表
 			List<String> list = getDateList();
@@ -178,11 +182,12 @@ public class ActionWeekTest02 {
 			} finally {
 				bw.close();
 			}
-			return new Result(true, I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
+			req.setAttribute("message", I18N.getString("com.esen.abistudy.action.actionweektest02.successmessage", "操作成功"));
 		} catch (Exception e) {
-			return new Result(false, 
-					I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage", "操作失败  错误信息：" + e.getLocalizedMessage()));
+			req.setAttribute("message", I18N.getString("com.esen.abistudy.action.actionweektest02.failmessage",
+					"操作失败  错误信息：" + e.getLocalizedMessage()));
 		}
+		return "abistudy/result";
 	}
 
 	/**

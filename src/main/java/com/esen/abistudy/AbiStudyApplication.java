@@ -1,6 +1,7 @@
 package com.esen.abistudy;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
@@ -22,6 +23,7 @@ import com.esen.core.Constants;
 		DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
 		WebSocketAutoConfiguration.class, MultipartAutoConfiguration.class })
 @EnableTransactionManagement
+@EnableAutoConfiguration(exclude = {MultipartAutoConfiguration.class})
 public class AbiStudyApplication extends SpringBootServletInitializer {
 
 	@Override
