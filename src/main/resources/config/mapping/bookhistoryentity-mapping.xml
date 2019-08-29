@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <entity name="bookhistory" table="BOOK_HISTORY" bean="com.esen.abistudy.orm.entity.BookHistoryEntity">
+        <properties>
+            <property name="bid" field="BID_"  nullale="false"  length="10" />
+            <property name="person" field="PERSON_"  nullale="false" length="20" />
+            <property name="fromdate" field="FROMDATE_"  type="P" nullale="false" />
+            <property name="todate" field="TODATE_" type="P" nullale="false"  />
+        </properties>
+    </entity>
+</mapping>

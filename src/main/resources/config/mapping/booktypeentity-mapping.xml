@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <entity name="booktype" table="BOOK_TYPE" bean="com.esen.abistudy.orm.entity.BookTypeEntity">
+        <properties>
+            <property name="cid" field="CID_"  nullale="false"  length="3"  />
+            <property name="tid" field="TID_"  nullale="false" unique="true" length="6"  pk="true"/>
+            <property name="tname" field="TNAME_"  nullale="false" length="200" />
+        </properties>
+    </entity>
+</mapping>

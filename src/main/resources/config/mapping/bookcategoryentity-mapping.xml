@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <entity name="bookcategory" table="BOOK_CATEGORY" bean="com.esen.abistudy.orm.entity.BookCategoryEntity">
+        <properties>
+            <property name="cid" field="CID_"  nullale="false" unique="true" length="3" pk="true" />
+            <property name="cname" field="CNAME_"  nullale="false" length="200" />
+        </properties>
+    </entity>
+</mapping>
