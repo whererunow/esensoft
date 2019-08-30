@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <entity name="bookinfo" table="WEEK04_BOOK_INFO" bean="com.esen.abistudy.orm.entity.BookInfoEntity">
+        <properties>
+            <property name="bid" field="BID_"  nullable="false" unique="true" length="20" pk="true" />
+            <property name="bname" field="BNAME_"  nullable="false" unique="true" length="100" />
+            <property name="briefIntroduction" field="BOOK_INTRODUCTION"    length="200" />
+            <property name="tid" field="TID_" nullable="false" length="20"></property>
+        </properties>
+    </entity>
+</mapping>
