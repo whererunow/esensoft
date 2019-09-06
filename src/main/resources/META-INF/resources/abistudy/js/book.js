@@ -153,14 +153,43 @@ define(
 					url :EUI.getContextPath()+"analysisChart/findAnalysisChartList.do",
 					callback:function(q){						
 						var data = q.getResponseJSON();
-						//加载前先清空分析表管理下的所有子节点
-						analysisChartManageItem.clearChildren();
-						for(var i=0,len=data.length;i<len;i++){
+						
+						for(var i=0,len_i=data.length;i<len_i;i++){
 							var analysisChartItem = analysisChartManageItem.appendChild(data[i].acname);
 							analysisChartItem.setUserObj(data[i]);
 							analysisChartItem.setOnClick(function(item){
 								self.changeTabCtrl(item);
 							})
+						}						
+					}
+				})
+			}
+			/**
+			 * 生成分析表后在分析表管理下新增节点
+			 */
+			Book.prototype.addAnalysisChart=function(analysisChartManageItem){
+				var self = this;
+				EUI.post({
+					url :EUI.getContextPath()+"analysisChart/findAnalysisChartList.do",
+					callback:function(q){						
+						var data = q.getResponseJSON();
+						//获取analysisChartManageItem的所有子节点 进行遍历 判断是否已存在 不存在才新建
+						var items = analysisChartManageItem.getAllChildrenItems(null,false);
+						for(var i=0,len_i=data.length;i<len_i;i++){
+							var flag = false;
+							for(var j=0,len_j=items.length;j<len_j;j++){
+								if(items[j].getItemPlainText() == data[i].acname){
+									flag=true;
+									break;
+								}
+							}
+							if(!flag){
+								var analysisChartItem = analysisChartManageItem.appendChild(data[i].acname);
+								analysisChartItem.setUserObj(data[i]);
+								analysisChartItem.setOnClick(function(item){
+									self.changeTabCtrl(item);
+								})
+							}
 						}
 					}
 				})

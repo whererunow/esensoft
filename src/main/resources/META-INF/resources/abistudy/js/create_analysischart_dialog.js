@@ -88,7 +88,7 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 				self.Book.showRecordList(0,14,false);
 				//往分析表管理树节点下添加生成的分析表子节点
 				var analysisChartManageItem = self.Book.etree.getRootItem().findItem("服务器").findItem("分析表管理");
-				self.Book.loadAnalysisChart(analysisChartManageItem);
+				self.Book.addAnalysisChart(analysisChartManageItem);
 			}
 		})
 	}
