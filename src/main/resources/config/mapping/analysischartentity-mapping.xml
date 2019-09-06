@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <entity name="analysischart" table="WEEK04_ANALYSIS_CHART" bean="com.esen.abistudy.orm.entity.AnalysisChartEntity">
+        <properties>
+            <property name="acid" field="ACID_"  nullable="false" unique="true" length="32" pk="true" />
+            <property name="acname" field="ACNAME_"  nullable="false" unique="true" length="100" />
+            <property name="scid" field="SCID_" nullable="false" length="32"></property>
+            <property name="data" field="DATA_" nullable="false" length="1000"></property>
+            
+        </properties>
+    </entity>
+</mapping>

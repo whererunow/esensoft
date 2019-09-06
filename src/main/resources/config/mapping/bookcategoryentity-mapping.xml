@@ -2,7 +2,7 @@
 <mapping>
     <entity name="bookcategory" table="WEEK04_BOOK_CATEGORY" bean="com.esen.abistudy.orm.entity.BookCategoryEntity">
         <properties>
-            <property name="cid" field="CID_"  nullable="false" unique="true" length="20" pk="true" />
+            <property name="cid" field="CID_"  nullable="false" unique="true" length="32" pk="true" />
             <property name="cname" field="CNAME_"  nullable="false" unique="true" length="100" />
         </properties>
     </entity>

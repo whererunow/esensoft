@@ -28,6 +28,8 @@ public class BookInfoEntity extends IdEntityImpl {
 	 * 图书所属子分类id
 	 */
 	private  String tid;
+	
+
 
 	public String getBid() {
 		return bid;

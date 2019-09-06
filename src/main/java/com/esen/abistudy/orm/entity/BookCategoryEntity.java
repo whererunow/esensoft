@@ -2,7 +2,7 @@ package com.esen.abistudy.orm.entity;
 
 import com.esen.ecore.domain.IdEntityImpl;
 /**
- * 图书主分类实体类
+ * 图书主分类表实体类
  * @author yangk
  * @since 2019年8月29日
  */

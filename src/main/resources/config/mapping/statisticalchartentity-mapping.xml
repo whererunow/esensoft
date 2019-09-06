@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <entity name="statisticalchart" table="WEEK04_STATISTICAL_CHART" bean="com.esen.abistudy.orm.entity.StatisticalChartEntity">
+        <properties>
+            <property name="scid" field="SCID_"  nullable="false" unique="true" length="32" pk="true" />
+            <property name="scname" field="SCNAME_"  nullable="false" unique="true" length="100" />
+        </properties>
+    </entity>
+</mapping>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapping>
+    <entity name="bookrecord" table="WEEK04_BOOK_RECORD" bean="com.esen.abistudy.orm.entity.BookRecordEntity">
+        <properties>
+            <property name="bid" field="BID_"  nullale="false"  length="32" />
+            <property name="person" field="PERSON_"  nullale="false" length="20" />
+            <property name="fromdate" field="FROMDATE_"   nullale="false" type="P"/>
+            <property name="todate" field="TODATE_"  nullale="false"  type="P"/>
+        </properties>
+    </entity>
+</mapping>
