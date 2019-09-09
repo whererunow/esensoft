@@ -18,6 +18,7 @@ import com.esen.ecore.repository.PageResult;
 
 import com.esen.ecore.util.jdbc.RowHandler;
 import com.esen.util.UNID;
+
 /**
  * 图书管理服务实现类
  * @author yangk
@@ -30,12 +31,13 @@ public class BookManageServiceImpl implements BookManageService {
 	 */
 	@Autowired
 	private BookInfoRepository bookInfoRepository;
+
 	/**
 	 * 注入BookTypeRepository 图书分类表持久层
 	 */
 	@Autowired
 	private BookTypeRepository bookTypeRepository;
-	
+
 	/**
 	 * 分页查询图书列表
 	 * @param pageIndex 页码索引
@@ -43,11 +45,11 @@ public class BookManageServiceImpl implements BookManageService {
 	 * @return 包含总记录数与当前页数据PageResult对象
 	 */
 	@Override
-	public PageResult<BookManagePojo> findBookList(int pageIndex,int pageSize){
+	public PageResult<BookManagePojo> findBookList(int pageIndex, int pageSize) {
 		String sql = "select t1.bid_,t1.bname_,t2.tname_,t3.cname_ "
 				+ "from week04_book_info t1,week04_book_type t2,week04_book_category t3 "
 				+ "where t1.tid_=t2.tid_ and t2.cid_ = t3.cid_ order by t3.cname_,t2.tname_,t1.bid_";
-		PageRequest page = new PageRequest(pageIndex,pageSize);
+		PageRequest page = new PageRequest(pageIndex, pageSize);
 		RowHandler<BookManagePojo> handler = new RowHandler<BookManagePojo>() {
 			@Override
 			public BookManagePojo processRow(ResultSet resultset) throws SQLException {
@@ -55,14 +57,14 @@ public class BookManageServiceImpl implements BookManageService {
 				bookManagePojo.setBid(resultset.getString("BID_"));
 				bookManagePojo.setBname(resultset.getString("BNAME_"));
 				bookManagePojo.setTname(resultset.getString("TNAME_"));
-				bookManagePojo.setCname(resultset.getString("CNAME_"));	
+				bookManagePojo.setCname(resultset.getString("CNAME_"));
 				return bookManagePojo;
 			}
 		};
 		PageResult<BookManagePojo> pageResult = bookInfoRepository.query(sql, page, handler);
 		return pageResult;
 	}
-	
+
 	/**
 	 * 查询主分类列表 在下拉框进行展示
 	 * @return  包含所有主分类数据的PageResult对象
@@ -71,7 +73,7 @@ public class BookManageServiceImpl implements BookManageService {
 	public PageResult<BookCategoryEntity> findCategoryList() {
 		String sql = "select cid_,cname_ from week04_book_category";
 		PageRequest page = new PageRequest();
-		RowHandler<BookCategoryEntity> handler =new RowHandler<BookCategoryEntity>() {
+		RowHandler<BookCategoryEntity> handler = new RowHandler<BookCategoryEntity>() {
 			@Override
 			public BookCategoryEntity processRow(ResultSet resultSet) throws SQLException {
 				BookCategoryEntity bookCategoryEntity = new BookCategoryEntity();
@@ -83,7 +85,7 @@ public class BookManageServiceImpl implements BookManageService {
 		PageResult<BookCategoryEntity> pageResult = bookInfoRepository.query(sql, page, handler);
 		return pageResult;
 	}
-	
+
 	/**
 	 * 根据主分类id查询子分类列表
 	 * @param cid  主分类id
@@ -102,21 +104,21 @@ public class BookManageServiceImpl implements BookManageService {
 				return bookTypeEntity;
 			}
 		};
-		PageResult<BookTypeEntity> pageResult = bookInfoRepository.query(sql, page, handler ,cid);
+		PageResult<BookTypeEntity> pageResult = bookInfoRepository.query(sql, page, handler, cid);
 		return pageResult;
 	}
-	
+
 	/**
 	 * 根据添加图书对话框中的数据添加bookInfoEntity
 	 * @param bookInfoEntity 封装了新加图书信息的实体类
 	 * @throws Exception 异常
 	 */
 	@Override
-	public void addBook(BookInfoEntity bookInfoEntity) throws Exception{
+	public void addBook(BookInfoEntity bookInfoEntity) throws Exception {
 		bookInfoEntity.setBid(UNID.randomID());
 		bookInfoRepository.add(bookInfoEntity);
 	}
-	
+
 	/**
 	 * 根据新建分裂对话框中的数据添加bookTypeEntity
 	 * @param bookTypeEntity 封装了分类信息的实体类

@@ -3,33 +3,39 @@ package com.esen.abistudy.orm.pojo;
 import java.util.Date;
 
 import com.esen.ecore.domain.IdEntityImpl;
+
 /**
  * 记录查询列表展示数据的pojo
  * @author yangk
  * @since 2019年9月6日
  */
-public class RecordQueryPojo  extends IdEntityImpl {
+public class RecordQueryPojo extends IdEntityImpl {
 
 	/**
 	 * 序列化id
 	 */
 	private static final long serialVersionUID = -7468704051521768287L;
+
 	/**
-	 * 图书id
+	 * 记录id
 	 */
-	private String bid;
+	private String rid;
+
 	/**
 	 * 图书名
 	 */
 	private String bname;
+
 	/**
 	 * 借阅人姓名
 	 */
 	private String person;
+
 	/**
 	 * 借阅日期
 	 */
 	private Date fromdate;
+
 	/**
 	 * 还书日期
 	 */
@@ -67,13 +73,12 @@ public class RecordQueryPojo  extends IdEntityImpl {
 		this.todate = todate;
 	}
 
-	public String getBid() {
-		return bid;
+	public String getRid() {
+		return rid;
 	}
 
-	public void setBid(String bid) {
-		this.bid = bid;
+	public void setRid(String rid) {
+		this.rid = rid;
 	}
-
 
 }

@@ -1,6 +1,7 @@
 package com.esen.abistudy.orm.entity;
 
 import com.esen.ecore.domain.IdEntityImpl;
+
 /**
  * 子分类实体类
  * @author yangk
@@ -12,14 +13,17 @@ public class BookTypeEntity extends IdEntityImpl {
 	 * 序列化id
 	 */
 	private static final long serialVersionUID = 2919488873793551759L;
-/**
- * 小类id
- */
+
+	/**
+	 * 小类id
+	 */
 	private String tid;
+
 	/**
 	 * 小类名称
 	 */
 	private String tname;
+
 	/**
 	 * 大类id
 	 */
@@ -48,6 +52,5 @@ public class BookTypeEntity extends IdEntityImpl {
 	public void setCid(String cid) {
 		this.cid = cid;
 	}
-	
-	
+
 }

@@ -6,6 +6,7 @@
             <property name="person" field="PERSON_"  nullale="false" length="20" />
             <property name="fromdate" field="FROMDATE_"   nullale="false" type="P"/>
             <property name="todate" field="TODATE_"  nullale="false"  type="P"/>
+            <property name="rid" field="RID_"  nullable="false" unique="true" length="32" pk="true" />
         </properties>
     </entity>
 </mapping>

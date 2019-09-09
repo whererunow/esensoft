@@ -16,8 +16,8 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 	 * 销毁方法
 	 */
 	AddtypeDialog.prototype.dispose=function(){
-		this.CategoryCombobox.dispose();
-		this.CategoryCombobox == null;
+		this.categoryCombobox.dispose();
+		this.categoryCombobox == null;
 		
 		EDialog.prototype.dispose.call(this);
 	}
@@ -37,61 +37,38 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
     			"<div class='eui-input-inline'><input id='tname' type='text' class='eui-form-input'></div>"+
 			"</div>";
 		 //初始化大类下拉框
-        this._initCategoryCombobox();	
+        this._initcategoryCombobox();	
         //点击确定时 先校验 通过后提交
         this.addButton(I18N.getString("abistudy.js.addtype_dialog.js.sure","确定"), "", false, true, function(){	
-			var tname = EUI.getDomValue(self.doc.getElementById("tname"));
-			var cid= self.CategoryCombobox.getValue();
-			if(tname == null || tname == ""){
-				alert(I18N.getString("abistudy.js.addtype_dialog.js.tips","带*内容为必须添加"));
-			}else if(cid == null || cid == ""){
-				alert(I18N.getString("abistudy.js.addtype_dialog.js.tips","带*内容为必须添加"));
-			}else{
-				self.commitDlg(tname,cid);
-			}
+        	 if(EUI.isFunction(self.onok)){
+	                self.onok();
+	         }			
 		});
         //点击取消关闭对话框
 		this.addButton(I18N.getString("abistudy.js.addtype_dialog.js.cancel","取消"), "", false, false, function(){
 			self.close();
 		});
 	}
-	/**
-	 * 提交对话框数据
-	 */
-	AddtypeDialog.prototype.commitDlg = function(tname,cid){
-		var self=this;
-		EUI.post({
-			url :EUI.getContextPath()+"book/addType.do",
-			data:{
-				tname:tname,
-				cid:cid
-			},
-			callback:function(q){
-				var result = q.getResponseText();
-				//这两个对话框可以配合使用，
-				EUI.showWaitDialog(I18N.getString("ES.COMMON.SAVING", "保存中"));
-				//执行一些其它的操作后，需要更改提醒以及关闭提示
-				EUI.hideWaitDialogWithComplete(2000, result);
-				//关闭窗口
-				self.close();
-			}
-		})
-	}
+	
+	AddtypeDialog.prototype.setOnOk = function(func){
+		this.onok = func;
+	};
+
 	/**
 	 * 清除对话框已有数据
 	 */
 	AddtypeDialog.prototype.clearDlg = function(){
 		EUI.setDomValue(this.doc.getElementById("tname"),"");
-		this.CategoryCombobox.clearValue();
+		this.categoryCombobox.clearValue();
 	}
 	
 	
 	/**
 	 * 初始化大类下拉框
 	 */
-	AddtypeDialog.prototype._initCategoryCombobox=function(){
+	AddtypeDialog.prototype._initcategoryCombobox=function(){
 		var self=this;
-		this.CategoryCombobox = new EListCombobox({
+		this.categoryCombobox = new EListCombobox({
 			wnd:this.wnd,
 			parentElement: this.doc.getElementById("category"),
 			width: 200,
@@ -110,7 +87,7 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 				for(var i=0,length=data.length;i<length;i++){
 					datas.push({caption:data[i].cname,value:data[i].cid});
 				}
-				self.CategoryCombobox.setDatas(datas);
+				self.categoryCombobox.setDatas(datas);
 			}
 		})
 	}

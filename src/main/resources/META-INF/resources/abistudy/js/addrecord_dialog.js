@@ -18,14 +18,14 @@ define(["eui/modules/edialog","eui/modules/ecombobox","eui/modules/ealmanac"],fu
 	 * 销毁方法
 	 */
 	AddrecordDialog.prototype.dispose=function(){
-		this.BookNameCombobox.dispose();
-		this.BookNameCombobox == null;
+		this.bookNameCombobox.dispose();
+		this.bookNameCombobox == null;
 		
-		this.FromdateCombobox.dispose();
-		this.FromdateCombobox == null;
+		this.fromdateCombobox.dispose();
+		this.fromdateCombobox == null;
 		
-		this.TodateCombobox.dispose();
-		this.TodateCombobox == null;
+		this.todateCombobox.dispose();
+		this.todateCombobox == null;
 		
 		EDialog.prototype.dispose.call(this);
 	}
@@ -53,67 +53,40 @@ define(["eui/modules/edialog","eui/modules/ecombobox","eui/modules/ealmanac"],fu
 				"<div id='todate' class='eui-float-left' style='margin-left:7px'></div>"+
 			"</div>";
 		//初始化书名下拉框
-		this._initBookNameCombobox();
+		this._initbookNameCombobox();
 		//初始化借阅日期下拉框
-		this._initFromdateCombobox();
+		this._initfromdateCombobox();
 		//初始化归还日期下拉框
-		this._initTodateCombobox();
+		this._inittodateCombobox();
 		//点击确定时获取对话框数据 先校验 通过后提交
 		this.addButton(I18N.getString("abistudy.js.addrecord_dialog.js.sure","确定"), "", false, true, function(){	
-			var bid = self.BookNameCombobox.getValue();
-			var person =  EUI.getDomValue(self.doc.getElementById("person"));
-			var fromdate = self.FromdateCombobox.getValue();
-			var todate = self.TodateCombobox.getValue();
-			if(bid == "" || person == "" || fromdate == "" || todate == ""){
-				alert(I18N.getString("abistudy.js.addrecord_dialog.js.tips","带*内容为必须添加"));
-			}else{
-				self.commitDlg(bid,person,fromdate,todate);
-			}
+			if(EUI.isFunction(self.onok)){
+                self.onok();
+			}				
 		});
 		this.addButton(I18N.getString("abistudy.js.addrecord_dialog.js.cancel","取消"), "", false, false, function(){
 			self.close();
 		});
 	}
+	
+	AddrecordDialog.prototype.setOnOk = function(func){
+		this.onok = func;
+	};
 	/**
 	 * 清除对话框中的数据记录
 	 */
 	AddrecordDialog.prototype.clearDlg =function(){
 		EUI.setDomValue(this.doc.getElementById("person"),"");
-		this.BookNameCombobox.clearValue();
-		this.FromdateCombobox.setValue(EUI.formatDate(new Date(),"yyyyMMdd"));
-		this.TodateCombobox.setValue(EUI.formatDate(new Date(),"yyyyMMdd"));
+		this.bookNameCombobox.clearValue();
+		this.fromdateCombobox.setValue(EUI.formatDate(new Date(),"yyyyMMdd"));
+		this.todateCombobox.setValue(EUI.formatDate(new Date(),"yyyyMMdd"));
 	}
-	/**
-	 * 提交对话框数据到后台
-	 */
-	AddrecordDialog.prototype.commitDlg = function(bid,person,fromdate,todate){
-		var self=this;
-		EUI.post({
-			url :EUI.getContextPath()+"record/addRecord.do",
-			data:{
-				bid:bid,
-				person:person,
-				fromdate:fromdate,
-				todate:todate
-			},
-			callback:function(q){
-				var result = q.getResponseText();
-				//这两个对话框可以配合使用，
-				EUI.showWaitDialog(I18N.getString("ES.COMMON.SAVING", "保存中"));
-				//执行一些其它的操作后，需要更改提醒以及关闭提示
-				EUI.hideWaitDialogWithComplete(1000, result);
-				//关闭窗口
-				self.close();
-				//刷新主界面
-				self.book.showRecordList(0,14,false);
-			}
-		})
-	}
+
 	/**
 	 * 初始化借阅日期下拉框
 	 */
-	AddrecordDialog.prototype._initFromdateCombobox=function(){
-		this.FromdateCombobox = new ECalendarCombobox({
+	AddrecordDialog.prototype._initfromdateCombobox=function(){
+		this.fromdateCombobox = new ECalendarCombobox({
 			parentElement:this.doc.getElementById("fromdate"),
 			width:200
 		});
@@ -121,8 +94,8 @@ define(["eui/modules/edialog","eui/modules/ecombobox","eui/modules/ealmanac"],fu
 	/**
 	 * 初始化借阅日期下拉框
 	 */
-	AddrecordDialog.prototype._initTodateCombobox=function(){
-		this.TodateCombobox = new ECalendarCombobox({
+	AddrecordDialog.prototype._inittodateCombobox=function(){
+		this.todateCombobox = new ECalendarCombobox({
 			parentElement:this.doc.getElementById("todate"),
 			width:200
 		});
@@ -131,9 +104,9 @@ define(["eui/modules/edialog","eui/modules/ecombobox","eui/modules/ealmanac"],fu
 	/**
 	 * 初始化书名下拉框
 	 */
-	AddrecordDialog.prototype._initBookNameCombobox=function(){
+	AddrecordDialog.prototype._initbookNameCombobox=function(){
 		var self=this;
-		this.BookNameCombobox = new EListCombobox({
+		this.bookNameCombobox = new EListCombobox({
 			wnd:this.wnd,
 			parentElement: this.doc.getElementById("record-bname"),
 			width: 200,
@@ -152,7 +125,7 @@ define(["eui/modules/edialog","eui/modules/ecombobox","eui/modules/ealmanac"],fu
 				for(var i=0,length=data.length;i<length;i++){
 					datas.push({caption:data[i].bname,value:data[i].bid});
 				}
-				self.BookNameCombobox.setDatas(datas);
+				self.bookNameCombobox.setDatas(datas);
 			}
 		})
 	}

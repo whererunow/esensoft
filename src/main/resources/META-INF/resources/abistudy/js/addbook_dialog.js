@@ -8,7 +8,6 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 	 */
 	function AddbookDialog(options) {
 		EDialog.call(this,options);
-		this.book = options.book;
 		this._initAddbookDialog();
 	}
 	//继承Edialog类
@@ -17,11 +16,11 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 	 * 销毁方法
 	 */
 	AddbookDialog.prototype.dispose=function(){
-		this.CategoryCombobox.dispose();
-		this.CategoryCombobox == null;
+		this.categoryCombobox.dispose();
+		this.categoryCombobox == null;
 		
-		this.TypeCombobox.dispose();
-		this.TypeCombobox == null;
+		this.typeCombobox.dispose();
+		this.typeCombobox == null;
 		
 		EDialog.prototype.dispose.call(this);
 	}
@@ -48,70 +47,42 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
         			"<div class='eui-input-block'><textarea  id='briefIntroduction' type='textarea' class='eui-form-textarea' style='width:200px' ></textarea></div>"+
         		"</div>"
         //初始化大类下拉框
-        this._initCategoryCombobox();
+        this._initcategoryCombobox();
 		//初始化小类下拉框
-		this._initTypeCombobox();
+		this._inittypeCombobox();
 		//点击确定按钮时 先校验 通过后再提交
 		this.addButton(I18N.getString("abistudy.js.addbook_dialog.js.sure","确定"), "", false, true, function(){	
-			var bookName = EUI.getDomValue(self.doc.getElementById("bookName"));
-			var cid= self.CategoryCombobox.getValue();
-			var tid = self.TypeCombobox.getValue();
-			if(bookName == null || bookName == ""){
-				alert(I18N.getString("abistudy.js.addbook_dialog.js.tips","带*内容为必须添加"));
-			}else if(cid ==null || cid==""){
-				alert(I18N.getString("abistudy.js.addbook_dialog.js.tips","带*内容为必须添加"));
-			}else if(tid ==null || tid==""){
-				alert(I18N.getString("abistudy.js.addbook_dialog.js.tips","带*内容为必须添加"));
-			}else{
-				var briefIntroduction = EUI.getDomValue(self.doc.getElementById("briefIntroduction"));
-				self.commitDlg(bookName,tid,briefIntroduction);
-			}		
-		});
+			 if(EUI.isFunction(self.onok)){
+	                self.onok();
+	            }
+	        });		
 		//点击取消时关闭窗口
 		this.addButton(I18N.getString("abistudy.js.addbook_dialog.js.cancel","取消"), "", false, false, function(){
 			self.close();
 		});
 	};
 	/**
-	 * 提交对话框 进行添加操作
-	 */
-	AddbookDialog.prototype.commitDlg = function(bookName,tid,briefIntroduction){
-		var self=this;
-		EUI.post({
-			url :EUI.getContextPath()+"book/addBook.do",
-			data:{
-				bname:bookName,
-				tid:tid,
-				briefIntroduction:briefIntroduction
-			},
-			callback:function(q){
-				var result = q.getResponseText();
-				//这两个对话框可以配合使用，
-				EUI.showWaitDialog(I18N.getString("ES.COMMON.SAVING", "保存中"));
-				//执行一些其它的操作后，需要更改提醒以及关闭提示
-				EUI.hideWaitDialogWithComplete(1000, result);
-				//关闭窗口
-				self.close();
-				//刷新列表
-				self.book.showBookList(0,14,false);
-			}
-		})
-	}
+	 * 点击确定时执行方法
+	 */	
+	AddbookDialog.prototype.setOnOk = function(func){
+	        this.onok = func;
+	};
+
 	/**
 	 * 清除对话框记录
 	 */
 	AddbookDialog.prototype.clearDlg=function(){
 		EUI.setDomValue(this.doc.getElementById("bookName"),"");
-		this.CategoryCombobox.clearValue();
-		this.TypeCombobox.clearValue();
+		this.categoryCombobox.clearValue();
+		this.typeCombobox.clearValue();
 		EUI.setDomValue(this.doc.getElementById("briefIntroduction"),"");
 	}	
 	/**
 	 * 初始化大类下拉框
 	 */
-	AddbookDialog.prototype._initCategoryCombobox=function(){
+	AddbookDialog.prototype._initcategoryCombobox=function(){
 		var self=this;
-		this.CategoryCombobox = new EListCombobox({
+		this.categoryCombobox = new EListCombobox({
 			wnd:this.wnd,
 			parentElement: this.doc.getElementById("categoryEcombobox"),
 			width: 200,
@@ -120,7 +91,7 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 			showFilter: false,
 			showCheckAll: false,
 			placeholder: I18N.getString("abistudy.js.addbook_dialog.js.placeholder","请选择")
-		});
+		});	
 		EUI.post({
 			url :EUI.getContextPath()+"book/findCategoryList.do",
 			callback:function(q){
@@ -129,18 +100,20 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 				for(var i=0,length=data.length;i<length;i++){
 					datas.push({caption:data[i].cname,value:data[i].cid});
 				}
-				self.CategoryCombobox.setDatas(datas);
-				self.CategoryCombobox.setOnChange(function(combox){
-					self.getTypeList(combox.getValue());
-				});
+				self.categoryCombobox.setDatas(datas);
+				//大类下拉框改变时获取小类下拉框的值
+				self.categoryCombobox.setOnChange(function(combobox){
+					self.getTypeList(combobox.getValue());
+				})
 			}
 		})
 	}
+
 	/**
 	 * 初始化小类下拉框
 	 */
-	AddbookDialog.prototype._initTypeCombobox=function(){
-		this.TypeCombobox = new EListCombobox({
+	AddbookDialog.prototype._inittypeCombobox=function(){
+		this.typeCombobox = new EListCombobox({
 			wnd:this.wnd,
 			parentElement: this.doc.getElementById("typeEcombobox"),
 			width: 200,
@@ -167,7 +140,7 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 				for(var i=0,length=data.length;i<length;i++){
 					datas.push({caption:data[i].tname,value:data[i].tid});
 				}
-				self.TypeCombobox.setDatas(datas);
+				self.typeCombobox.setDatas(datas);
 			}
 		});
 	}

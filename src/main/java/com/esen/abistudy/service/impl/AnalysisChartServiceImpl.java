@@ -11,6 +11,7 @@ import com.esen.abistudy.orm.entity.StatisticalChartEntity;
 import com.esen.abistudy.service.AnalysisChartService;
 import com.esen.ecore.annotation.ApplicationService;
 import com.esen.util.UNID;
+
 /**
  * 分析表服务实现类
  * @author yangk
@@ -23,11 +24,13 @@ public class AnalysisChartServiceImpl implements AnalysisChartService {
 	 */
 	@Autowired
 	private StatisticalChartRepository statisticalChartRepository;
+
 	/**
 	 * 注入analysisChartRepository 分析表持久层
 	 */
 	@Autowired
 	private AnalysisChartRepository analysisChartRepository;
+
 	/**
 	 * 查询统计图表中的所有记录 
 	 * @return 统计图表中所有记录的Collection集合
@@ -37,6 +40,7 @@ public class AnalysisChartServiceImpl implements AnalysisChartService {
 		Collection<StatisticalChartEntity> list = statisticalChartRepository.findAll();
 		return list;
 	}
+
 	/**
 	 * 添加分析表
 	 * @param analysisChartEntity 封装了分析表所需数据的实体类
@@ -57,5 +61,5 @@ public class AnalysisChartServiceImpl implements AnalysisChartService {
 		Collection<AnalysisChartEntity> list = analysisChartRepository.findAll();
 		// TODO Auto-generated method stub
 		return list;
-	}	
+	}
 }

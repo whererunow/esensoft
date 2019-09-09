@@ -6,8 +6,6 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 	 */
 	function CreateACDialog(options) {
 		EDialog.call(this,options);
-		//将book对象传入
-		this.Book = options.book;
 		this._initCreateACDialog();
 	}
 	//继承Edialog类
@@ -16,8 +14,8 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 	 * 销毁方法
 	 */
 	CreateACDialog.prototype.dispose=function(){
-		this.StatisticalChartCombobox.dispose();
-		this.StatisticalChartCombobox == null;
+		this.statisticalChartCombobox.dispose();
+		this.statisticalChartCombobox == null;
 		
 		EDialog.prototype.dispose.call(this);
 	}
@@ -38,68 +36,37 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
     		"</div>";
     		
 		 //初始化下拉框
-        this._initStatisticalChartCombobox();	
+        this._initstatisticalChartCombobox();	
         //点击确定时 先校验 通过后提交
         this.addButton(I18N.getString("abistudy.js.create_analysischart_dialog.js.sure","确定"), "", false, true, function(){	
-        	var acname = EUI.getDomValue(self.doc.getElementById("acname"));
-			var scid= self.StatisticalChartCombobox.getValue();
-			if(acname == null || acname == ""){
-				alert(I18N.getString("abistudy.js.create_analysischart_dialog.js.tips","带*内容为必须添加"));
-			}else if(scid == null || scid == ""){
-				alert(I18N.getString("abistudy.js.create_analysischart_dialog.js.tips","带*内容为必须添加"));
-			}else{
-				self.commitDlg(acname,scid,JSON.stringify(self.Book.analysisChartData));
-			}
-		});
+        	if(EUI.isFunction(self.onok)){
+                self.onok();
+            }
+      	});
 		
 		this.addButton(I18N.getString("abistudy.js.create_analysischart_dialog.js.cancel","取消"), "", false, false, function(){
 			self.close();
 		});
 	}
+	
+	CreateACDialog.prototype.setOnOk = function(func){
+        this.onok = func;
+	};
 	/**
 	 * 清除原有对话框数据
 	 */
 	CreateACDialog.prototype.clearDlg = function(){
 		EUI.setDomValue(this.doc.getElementById("acname"),"");
-		this.StatisticalChartCombobox.clearValue();
-	}
-	/**
-	 * 提交对话框数据
-	 */
-	CreateACDialog.prototype.commitDlg = function(acname,scid,analysisChartData){
-		var self=this;
-		EUI.post({
-			url :EUI.getContextPath()+"analysisChart/createAnalysisChart.do",
-			data:{
-				acname:acname,
-				scid:scid,
-				data:analysisChartData
-			},
-			callback:function(q){
-				var result = q.getResponseText();
-				//这两个对话框可以配合使用，
-				EUI.showWaitDialog(I18N.getString("ES.COMMON.SAVING", "保存中"));
-				//执行一些其它的操作后，需要更改提醒以及关闭提示
-				EUI.hideWaitDialogWithComplete(1000, result);
-				//关闭窗口
-				self.close();
-				//将选中提交的行清空
-				self.Book.checkedRowsInfo = [];
-				self.Book.showRecordList(0,14,false);
-				//往分析表管理树节点下添加生成的分析表子节点
-				var analysisChartManageItem = self.Book.etree.getRootItem().findItem("服务器").findItem("分析表管理");
-				self.Book.addAnalysisChart(analysisChartManageItem);
-			}
-		})
+		this.statisticalChartCombobox.clearValue();
 	}
 	
 	
 	/**
 	 * 初始化统计图下拉框
 	 */
-	CreateACDialog.prototype._initStatisticalChartCombobox=function(){
+	CreateACDialog.prototype._initstatisticalChartCombobox=function(){
 		var self=this;
-		this.StatisticalChartCombobox = new EListCombobox({
+		this.statisticalChartCombobox = new EListCombobox({
 			wnd:this.wnd,
 			parentElement: this.doc.getElementById("statisticalchart"),
 			width: 200,
@@ -118,7 +85,7 @@ define(["eui/modules/edialog","eui/modules/ecombobox"],function(edialog,ecombobo
 				for(var i=0,length=data.length;i<length;i++){
 					datas.push({caption:data[i].scname,value:data[i].scid});
 				}
-				self.StatisticalChartCombobox.setDatas(datas);
+				self.statisticalChartCombobox.setDatas(datas);
 			}
 		})
 	}

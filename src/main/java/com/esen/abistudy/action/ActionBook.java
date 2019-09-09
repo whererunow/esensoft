@@ -27,6 +27,7 @@ import com.esen.util.i18n.I18N;
 @Controller
 @RequestMapping("/book")
 public class ActionBook {
+
 	/**
 	 * 注入bookManageService 
 	 */
@@ -45,6 +46,7 @@ public class ActionBook {
 		//调整ftl界面
 		return "abistudy/book";
 	}
+
 	/**
 	 * 分页查询图书列表
 	 * @param pageIndex 页码索引
@@ -60,6 +62,7 @@ public class ActionBook {
 		map.put("result", pageResult.list());
 		return JsonUtils.toJSONString(map);
 	}
+
 	/**
 	 * 查询主分类列表 在下拉框进行展示
 	 * @return  包含所有主分类数据的json字符串
@@ -70,6 +73,7 @@ public class ActionBook {
 		PageResult<BookCategoryEntity> pageResult = bookManageService.findCategoryList();
 		return JsonUtils.toJSONString(pageResult.list());
 	}
+
 	/**
 	 * 根据主分类id查询子分类列表
 	 * @param cid  主分类id
@@ -81,35 +85,28 @@ public class ActionBook {
 		PageResult<BookTypeEntity> pageResult = bookManageService.findTypeList(cid);
 		return JsonUtils.toJSONString(pageResult.list());
 	}
+
 	/**
 	 * 根据添加图书对话框中的数据添加bookInfoEntity
 	 * @param bookInfoEntity 封装了新加图书信息的实体类
 	 * @return 添加操作结果提示信息
+	 * @throws Exception 
 	 */
 	@RequestMapping("/addBook")
 	@ResponseBody
-	public String addBook(BookInfoEntity bookInfoEntity) {
-		try {
-			bookManageService.addBook(bookInfoEntity);
-			return I18N.getString("com.esen.abistudy.actionbook.addbooksuccessmsg","添加成功！");
-		} catch (Exception e) {
-			return I18N.getString("com.esen.abistudy.actionbook.addbookfailmsg","添加失败！");
-		}
+	public void addBook(BookInfoEntity bookInfoEntity) throws Exception {
+		bookManageService.addBook(bookInfoEntity);	
 	}
+
 	/**
 	 * 根据新建分裂对话框中的数据添加bookTypeEntity
 	 * @param bookTypeEntity 封装了分类信息的实体类
 	 * @return 添加操作结果提示信息
+	 * @throws Exception 
 	 */
 	@RequestMapping("/addType")
 	@ResponseBody
-	public String addType(BookTypeEntity bookTypeEntity) {
-		try {
+	public void addType(BookTypeEntity bookTypeEntity) throws Exception {
 			bookManageService.addType(bookTypeEntity);
-			return I18N.getString("com.esen.abistudy.actionbook.addtypesuccessmsg","添加成功！");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return I18N.getString("com.esen.abistudy.actionbook.addtypefailmsg","添加失败！");
-		}
 	}
 }
